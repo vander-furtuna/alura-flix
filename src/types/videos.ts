@@ -1,4 +1,4 @@
-export type Category = 'FRONTEND' | 'BACKEND' | 'MOBILE' | 'NONE'
+export type Category = 'FRONTEND' | 'BACKEND' | 'MOBILE' | null
 
 export interface Video {
   id: string

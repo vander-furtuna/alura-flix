@@ -6,17 +6,17 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import vanderFlixLogo from '../../assets/vander-flix-logo.png'
-import { Button } from '../../components/button'
-import { useVideos } from '../../contexts/video'
-import { Category } from '../../types/videos'
+import vanderFlixLogo from '../../../assets/vander-flix-logo.png'
+import { Button } from '../../../components/button'
+import { useVideos } from '../../../contexts/video'
+import { Category } from '../../../types/videos'
 import { BannerSlide } from './banner-slide'
 
 export function Banner() {
   const { videos } = useVideos()
 
-  const [activeCategory, setActiveCategory] = useState<Category>(
-    videos && videos?.length > 0 ? videos[0].category : 'NONE',
+  const [activeCategory, setActiveCategory] = useState<Category | null>(
+    videos && videos?.length > 0 ? videos[0].category : null,
   )
 
   const featuredVideos = useMemo(
@@ -35,7 +35,7 @@ export function Banner() {
   )
 
   useEffect(() => {
-    if (activeCategory === 'NONE' && videos && videos.length > 0) {
+    if (activeCategory === null && videos && videos.length > 0) {
       setActiveCategory(videos[0].category)
     }
     console.log(videos)
@@ -53,7 +53,7 @@ export function Banner() {
           className="h-8 w-auto"
         />
 
-        <Button Icon={Film} category={activeCategory}>
+        <Button Icon={Film} category={activeCategory} as="a" link="/novo-video">
           Criar
         </Button>
       </div>

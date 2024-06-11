@@ -1,6 +1,5 @@
-
-import { Tag } from '../../components/tag'
-import { Video } from '../../types/videos'
+import { Tag } from '../../../components/tag'
+import { Video } from '../../../types/videos'
 
 interface BannerSlideProps {
   video: Video

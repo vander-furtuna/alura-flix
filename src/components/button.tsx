@@ -24,18 +24,27 @@ interface ButtonProps
   extends ComponentProps<'button'>,
     VariantProps<typeof buttonVariants> {
   Icon: LucideIcon
+  as?: 'button' | 'a'
+  link?: string
 }
 
 export function Button({
+  as = 'button',
+  link = '#',
   children,
   className,
   category = 'FRONTEND',
   Icon,
 }: ButtonProps) {
+  const Element = as === 'a' ? 'a' : 'button'
+
   return (
-    <button className={cn(buttonVariants({ className, category }))}>
+    <Element
+      className={cn(buttonVariants({ className, category }))}
+      href={link}
+    >
       <Icon size={20} className="size-5 flex-shrink-0 text-white" />
       {children}
-    </button>
+    </Element>
   )
 }
