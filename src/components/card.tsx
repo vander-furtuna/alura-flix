@@ -1,9 +1,11 @@
 import { cva, VariantProps } from 'class-variance-authority'
 import { ComponentProps } from 'react'
 
+import { useVideos } from '../contexts/video'
 import { cn } from '../lib/tailwind-merge'
 import { Video } from '../types/videos'
 import { ActionButton } from './action-button'
+import { EditDialog } from './edit-dialog'
 
 const cardVariants = cva(
   'w-[25rem] h-[14rem] border-2 border-solid rounded-xl shadow-xl overflow-hidden transition-shadow duration-300 ease-in-out cursor-pointer relative',
@@ -27,6 +29,7 @@ interface CardProps
 }
 
 export function Card({ video, className, category }: CardProps) {
+  const { deleteVideo } = useVideos()
   return (
     <div className={cn(cardVariants({ className, category }))}>
       <img
@@ -35,8 +38,10 @@ export function Card({ video, className, category }: CardProps) {
         className="size-full object-cover"
       />
       <div className="absolute bottom-4 right-4 flex gap-2">
-        <ActionButton action="delete" />
-        <ActionButton action="edit" />
+        <ActionButton action="delete" onClick={() => deleteVideo(video.id)} />
+        <EditDialog video={video}>
+          <ActionButton action="edit" />
+        </EditDialog>
       </div>
     </div>
   )

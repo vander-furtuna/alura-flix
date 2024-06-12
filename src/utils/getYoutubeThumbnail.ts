@@ -3,7 +3,7 @@ export function getThumbnail(link: string) {
   if (videoid) {
     return `https://i1.ytimg.com/vi/${videoid}/maxresdefault.jpg`
   } else {
-    throw new Error('Invalid YouTube link')
+    return ''
   }
 }
 

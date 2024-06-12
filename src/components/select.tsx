@@ -38,7 +38,7 @@ export function Select({ category, options, error, ...props }: SelectProps) {
         {error && <Input.Error error={error} />}
       </RadixSelect.Trigger>
       <RadixSelect.Portal>
-        <RadixSelect.Content className="overflow-hidden rounded-md bg-neutral-800">
+        <RadixSelect.Content className="z-50 overflow-hidden rounded-md bg-neutral-800">
           <RadixSelect.ScrollUpButton className="flex h-7 cursor-default items-center justify-center bg-neutral-800 text-white">
             <ChevronUp />
           </RadixSelect.ScrollUpButton>

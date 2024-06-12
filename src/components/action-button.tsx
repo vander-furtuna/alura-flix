@@ -26,6 +26,7 @@ interface ActionButtonProps
 export function ActionButton({
   className,
   action = 'edit',
+  ...props
 }: ActionButtonProps) {
   const Icon = useMemo(() => (action === 'delete' ? Trash : PenLine), [action])
   const label = useMemo(
@@ -34,7 +35,10 @@ export function ActionButton({
   )
 
   return (
-    <button className={cn(actionButtonVariants({ className, action }))}>
+    <button
+      className={cn(actionButtonVariants({ className, action }))}
+      {...props}
+    >
       <i>
         <Icon size={24} />
       </i>

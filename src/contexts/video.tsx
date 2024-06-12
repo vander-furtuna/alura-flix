@@ -16,6 +16,8 @@ const LOCAL_STORAGE_KEY = 'vander.flix@videos'
 type VideosContextType = {
   videos: Video[] | null
   addVideo: (video: Video) => void
+  deleteVideo: (id: string) => void
+  editVideo: (video: Video) => void
 }
 
 // Create the videos context
@@ -25,19 +27,44 @@ const VideosContext = createContext<VideosContextType | undefined>(undefined)
 export function VideosProvider({ children }: { children: ReactNode }) {
   const [videos, setVideos] = useState<Video[] | null>(null)
 
-  const updateVideosOnLocalStorage = useCallback(() => {
-    if (videos) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(videos))
-    }
-  }, [videos])
   // Function to add a new video
-  const addVideo = useCallback(
-    (video: Video) => {
-      setVideos((prevVideos) => prevVideos && [...prevVideos, video])
-      updateVideosOnLocalStorage()
-    },
-    [updateVideosOnLocalStorage],
-  )
+  const addVideo = useCallback((video: Video) => {
+    setVideos((prevVideos) => {
+      if (prevVideos) {
+        const updatedVideos = [...prevVideos, video]
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedVideos))
+        return updatedVideos
+      }
+      return null
+    })
+  }, [])
+
+  const editVideo = useCallback((video: Video) => {
+    setVideos((prevVideos) => {
+      if (prevVideos) {
+        const updatedVideos = prevVideos.map((v) => {
+          if (v.id === video.id) {
+            return video
+          }
+          return v
+        })
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedVideos))
+        return updatedVideos
+      }
+      return null
+    })
+  }, [])
+
+  const deleteVideo = useCallback((id: string) => {
+    setVideos((prevVideos) => {
+      if (prevVideos) {
+        const updatedVideos = prevVideos.filter((video) => video.id !== id)
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedVideos))
+        return updatedVideos
+      }
+      return null
+    })
+  }, [])
 
   useEffect(() => {
     if (videos === null) {
@@ -53,7 +80,9 @@ export function VideosProvider({ children }: { children: ReactNode }) {
   }, [videos])
 
   return (
-    <VideosContext.Provider value={{ videos, addVideo }}>
+    <VideosContext.Provider
+      value={{ videos, addVideo, editVideo, deleteVideo }}
+    >
       {children}
     </VideosContext.Provider>
   )

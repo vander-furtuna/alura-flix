@@ -1,21 +1,28 @@
 import { cva, VariantProps } from 'class-variance-authority'
 import { LucideIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { cn } from '../lib/tailwind-merge'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center px-4 py-3 gap-2 text-white rounded-lg uppercase font-bold text-base flex-shrink-0 h-fit',
+  'inline-flex items-center justify-center px-4 py-3 gap-2 text-white rounded-lg uppercase font-bold text-base flex-shrink-0 h-fit w-fit',
   {
     variants: {
       category: {
-        BACKEND: 'bg-gradient-to-r from-emerald-300 to-emerald-500',
-        FRONTEND: 'bg-gradient-to-r from-cyan-300 to-cyan-500',
-        MOBILE: 'bg-gradient-to-r from-amber-400 to-amber-500',
+        BACKEND: ' from-emerald-300 to-emerald-500  border-emerald-500',
+        FRONTEND: ' from-cyan-300 to-cyan-500  border-cyan-500',
+        MOBILE: ' from-amber-400 to-amber-500  border-amber-500',
+      },
+      variant: {
+        outlined: 'bg-white/20 border-solid border-2',
+        filled: 'bg-gradient-to-r border-none',
       },
     },
+
     defaultVariants: {
       category: 'FRONTEND',
+      variant: 'filled',
     },
   },
 )
@@ -23,28 +30,35 @@ const buttonVariants = cva(
 interface ButtonProps
   extends ComponentProps<'button'>,
     VariantProps<typeof buttonVariants> {
-  Icon: LucideIcon
-  as?: 'button' | 'a'
+  Icon?: LucideIcon
   link?: string
 }
 
 export function Button({
-  as = 'button',
   link = '#',
   children,
   className,
   category = 'FRONTEND',
+  variant,
   Icon,
+  onClick,
+  ...props
 }: ButtonProps) {
-  const Element = as === 'a' ? 'a' : 'button'
+  const navigate = useNavigate()
 
   return (
-    <Element
-      className={cn(buttonVariants({ className, category }))}
-      href={link}
+    <button
+      className={cn(buttonVariants({ className, category, variant }))}
+      onClick={(event) => {
+        if (onClick) {
+          onClick(event)
+        }
+        navigate(link)
+      }}
+      {...props}
     >
-      <Icon size={20} className="size-5 flex-shrink-0 text-white" />
+      {Icon && <Icon size={20} className="size-5 flex-shrink-0 text-white" />}
       {children}
-    </Element>
+    </button>
   )
 }

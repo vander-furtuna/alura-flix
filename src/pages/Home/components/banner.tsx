@@ -6,8 +6,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import vanderFlixLogo from '../../../assets/vander-flix-logo.png'
 import { Button } from '../../../components/button'
+import { Header } from '../../../components/header'
 import { useVideos } from '../../../contexts/video'
 import { Category } from '../../../types/videos'
 import { BannerSlide } from './banner-slide'
@@ -43,20 +43,11 @@ export function Banner() {
 
   return (
     <section className="h-[40rem] w-full bg-neutral-900">
-      <div
-        className="absolute z-10 flex h-32 w-full justify-between bg-gradient-to-b to-transparent px-16 py-12 data-[category=BACKEND]:from-emerald-400/70 data-[category=FRONTEND]:from-cyan-400/70 data-[category=MOBILE]:from-amber-500/70"
-        data-category={activeCategory}
-      >
-        <img
-          src={vanderFlixLogo}
-          alt="Logo vander.flix"
-          className="h-8 w-auto"
-        />
-
+      <Header className="absolute" category={activeCategory}>
         <Button Icon={Film} category={activeCategory} as="a" link="/novo-video">
           Criar
         </Button>
-      </div>
+      </Header>
       <Swiper
         navigation={true}
         rewind={true}
